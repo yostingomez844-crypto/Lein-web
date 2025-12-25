@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>León IA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:#0f2027;
+      color:white;
+      display:flex;
+      justify-content:center;
+    }
+    .app{
+      width:100%;
+      max-width:420px;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      background:#111;
+    }
+    header{
+      text-align:center;
+      padding:15px;
+      font-size:20px;
+      background:#000;
+    }
+    .chat{
+      flex:1;
+      padding:10px;
+      overflow-y:auto;
+    }
+    .msg{
+      margin:8px 0;
+      padding:10px;
+      border-radius:10px;
+      max-width:80%;
+    }
+    .user{
+      background:#1e90ff;
+      margin-left:auto;
+    }
+    .bot{
+      background:#333;
+    }
+    .input{
+      display:flex;
+      padding:10px;
+      background:#000;
+    }
+    input{
+      flex:1;
+      padding:10px;
+      border:none;
+      border-radius:5px;
+      outline:none;
+    }
+    button{
+      margin-left:8px;
+      padding:10px 15px;
+      border:none;
+      border-radius:5px;
+      background:#1e90ff;
+      color:white;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>🦁 León IA</header>
+
+    <div class="chat" id="chat">
+      <div class="msg bot">Hola 👋 Soy León IA. Escríbeme.</div>
+    </div>
+
+    <div class="input">
+      <input id="text" placeholder="Escribe aquí..." />
+      <button onclick="send()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    function send(){
+      const input = document.getElementById("text");
+      const chat = document.getElementById("chat");
+      if(input.value.trim()==="") return;
+
+      chat.innerHTML += `<div class="msg user">${input.value}</div>`;
+      chat.innerHTML += `<div class="msg bot">Estoy funcionando correctamente ✅</div>`;
+      input.value="";
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
