@@ -1,100 +1,73 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>León IA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body{
-      margin:0;
-      font-family:Arial, sans-serif;
-      background:#0f2027;
-      color:white;
-      display:flex;
-      justify-content:center;
-    }
-    .app{
-      width:100%;
-      max-width:420px;
-      height:100vh;
-      display:flex;
-      flex-direction:column;
-      background:#111;
-    }
-    header{
-      text-align:center;
-      padding:15px;
-      font-size:20px;
-      background:#000;
-    }
-    .chat{
-      flex:1;
-      padding:10px;
-      overflow-y:auto;
-    }
-    .msg{
-      margin:8px 0;
-      padding:10px;
-      border-radius:10px;
-      max-width:80%;
-    }
-    .user{
-      background:#1e90ff;
-      margin-left:auto;
-    }
-    .bot{
-      background:#333;
-    }
-    .input{
-      display:flex;
-      padding:10px;
-      background:#000;
-    }
-    input{
-      flex:1;
-      padding:10px;
-      border:none;
-      border-radius:5px;
-      outline:none;
-    }
-    button{
-      margin-left:8px;
-      padding:10px 15px;
-      border:none;
-      border-radius:5px;
-      background:#1e90ff;
-      color:white;
-      cursor:pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>León IA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;font-family:Arial;background:#0f2027;color:white}
+.app{max-width:420px;margin:auto;height:100vh;display:flex;flex-direction:column;background:#111}
+header{text-align:center;padding:15px;font-size:20px;background:#000}
+.chat{flex:1;padding:10px;overflow:auto}
+.msg{margin:8px;padding:10px;border-radius:10px;max-width:80%}
+.user{background:#1e90ff;margin-left:auto}
+.bot{background:#333}
+.input{display:flex;padding:10px;background:#000}
+input{flex:1;padding:10px;border:none;border-radius:5px}
+button{margin-left:5px;padding:10px;background:#1e90ff;border:none;color:white;border-radius:5px}
+</style>
 </head>
 
 <body>
-  <div class="app">
-    <header>🦁 León IA</header>
+<div class="app">
+<header>🦁 León IA</header>
+<div class="chat" id="chat">
+<div class="msg bot">Hola, soy León IA. Di “ok León” o escribe.</div>
+</div>
+<div class="input">
+<input id="txt" placeholder="Escribe aquí…">
+<button onclick="send()">Enviar</button>
+<button onclick="voice()">🎤</button>
+</div>
+</div>
 
-    <div class="chat" id="chat">
-      <div class="msg bot">Hola 👋 Soy León IA. Escríbeme.</div>
-    </div>
+<script>
+const chat=document.getElementById("chat");
+const txt=document.getElementById("txt");
 
-    <div class="input">
-      <input id="text" placeholder="Escribe aquí..." />
-      <button onclick="send()">Enviar</button>
-    </div>
-  </div>
+function add(text,cls){
+let d=document.createElement("div");
+d.className="msg "+cls;
+d.innerText=text;
+chat.appendChild(d);
+chat.scrollTop=chat.scrollHeight;
+}
 
-  <script>
-    function send(){
-      const input = document.getElementById("text");
-      const chat = document.getElementById("chat");
-      if(input.value.trim()==="") return;
+function send(){
+if(!txt.value)return;
+add(txt.value,"user");
+add("Entendido: "+txt.value,"bot");
+txt.value="";
+}
 
-      chat.innerHTML += `<div class="msg user">${input.value}</div>`;
-      chat.innerHTML += `<div class="msg bot">Estoy funcionando correctamente ✅</div>`;
-      input.value="";
-      chat.scrollTop = chat.scrollHeight;
-    }
-  </script>
+function voice(){
+if(!('webkitSpeechRecognition'in window)){
+alert("Tu navegador no soporta voz");
+return;
+}
+let r=new webkitSpeechRecognition();
+r.lang="es-ES";
+r.start();
+r.onresult=e=>{
+let t=e.results[0][0].transcript;
+txt.value=t;
+if(t.toLowerCase().includes("ok león")){
+add("ok León","user");
+add("Te escucho","bot");
+}
+};
+}
+</script>
 </body>
 </html>
